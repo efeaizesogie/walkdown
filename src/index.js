@@ -149,16 +149,21 @@ async function setStatus(s) {
 exports.sampleConsumer = async (event) => {
   const body = (event && event.body) || event || {};
   const lines = [];
-  const log = async (line) => {
+  // Progress writes are chained so a late "running" write can never overwrite "done".
+  let writes = Promise.resolve();
+  const log = (line) => {
     lines.push(line);
     console.log('sample:', line);
-    await setStatus({ state: 'running', lines });
+    const snapshot = [...lines];
+    writes = writes.then(() => setStatus({ state: 'running', lines: snapshot })).catch(() => {});
   };
   try {
-    const out = await loadSample({ leadAccountId: body.accountId, siteUrl: body.siteUrl, log: (l) => log(l) });
+    const out = await loadSample({ leadAccountId: body.accountId, siteUrl: body.siteUrl, log });
+    await writes;
     await setStatus({ state: 'done', lines, result: out });
   } catch (e) {
     console.error('sample failed', e);
+    await writes;
     await setStatus({ state: 'failed', lines, error: e.message, hint: e.hint });
   }
 };
@@ -188,6 +193,13 @@ resolver.define('runRehearsal', async ({ payload, context }) =>
     source: 'app',
   })
 );
+
+resolver.define('askOnTicket', async ({ payload }) => {
+  const key = String(payload.issueKey || '').trim().toUpperCase();
+  const sev = payload.severity ? ` (${payload.severity})` : '';
+  const status = await comment(key, `Walkdown auditor${sev}: ${payload.question}`);
+  return { posted: status === 201, status };
+});
 
 resolver.define('latest', async ({ payload }) => R.latestRun(payload.projectKey || R.DEFAULT_PROJECT));
 resolver.define('history', async ({ payload }) => R.history(payload.projectKey || R.DEFAULT_PROJECT));

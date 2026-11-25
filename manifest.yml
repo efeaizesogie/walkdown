@@ -133,10 +133,18 @@ modules:
   jira:globalPage:
     - key: walkdown-home
       resource: main
-      render: native
       resolver:
         function: resolver
       title: Walkdown
+      icon: resource:main;icon.svg
+  jira:issueContext:
+    - key: walkdown-issue-panel
+      resource: main
+      resolver:
+        function: resolver
+      title: Walkdown trace
+      label: Walkdown trace
+      icon: resource:main;icon.svg
   function:
     - key: traceRequirement
       handler: index.traceRequirement
@@ -164,7 +172,7 @@ resources:
   - key: agent-prompts
     path: prompts
   - key: main
-    path: src/frontend/index.jsx
+    path: ui/dist
 permissions:
   scopes:
     - read:jira-work
