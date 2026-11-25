@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Walkdown</title>
+<style>
+/* Hallmark · v2.0.0 · redesign: polish · scope: app · system: locked DESIGN.md (Atlassian Design System tokens) · linter: unavailable (blocked in this environment), Floor applied by hand */
+/* critique: the walk rail is the signature; verdict band carries the number; red marks only the broken station · waive 62: app screen renders from data, JS required (Forge Custom UI) */
+/* ADS token names with light-mode fallbacks. Inside Jira, view.theme.enable() supplies the real values. */
+:root {
+  --surface: var(--ds-surface, #ffffff);
+  --surface-sunken: var(--ds-surface-sunken, #f7f8f9);
+  --surface-raised: var(--ds-surface-raised, #ffffff);
+  --border: var(--ds-border, #091e4224);
+  --border-bold: var(--ds-border-bold, #758195);
+  --text: var(--ds-text, #172b4d);
+  --text-subtle: var(--ds-text-subtle, #44546f);
+  --text-subtlest: var(--ds-text-subtlest, #626f86);
+  --inverse-bg: var(--ds-background-neutral-bold, #44546f);
+  --inverse-text: var(--ds-text-inverse, #ffffff);
+  --danger-text: var(--ds-text-danger, #ae2e24);
+  --danger-bg: var(--ds-background-danger, #ffeceb);
+  --danger-border: var(--ds-border-danger, #e2483d);
+  --danger-bold: var(--ds-background-danger-bold, #c9372c);
+  --warning-text: var(--ds-text-warning, #a54800);
+  --warning-bg: var(--ds-background-warning, #fff7d6);
+  --discovery-text: var(--ds-text-discovery, #5e4db2);
+  --discovery-bg: var(--ds-background-discovery, #f3f0ff);
+  --success-icon: var(--ds-icon-success, #22a06b);
+  --brand: var(--ds-text-brand, #0c66e4);
+  --select: var(--ds-background-selected, #e9f2ff);
+  --font: var(--ds-font-family-body, "Atlassian Sans", ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif);
+  --mono: var(--ds-font-family-code, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+  --s1: var(--ds-space-100, 8px);
+  --s2: var(--ds-space-200, 16px);
+  --s3: var(--ds-space-300, 24px);
+  --s4: var(--ds-space-400, 32px);
+  --s6: var(--ds-space-600, 48px);
+  --radius: var(--ds-border-radius, 4px);
+  --primary-bg: var(--ds-background-brand-bold, #0c66e4);
+  --primary-text: var(--ds-text-inverse, #ffffff);
+  --focus: var(--ds-border-focused, #388bff);
+  --warning-border: var(--ds-border-warning, #e06c00);
+  --discovery-border: var(--ds-border-discovery, #8270db);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: var(--ds-surface, #1d2125); --surface-sunken: var(--ds-surface-sunken, #161a1d); --surface-raised: var(--ds-surface-raised, #22272b);
+    --border: var(--ds-border, #a6c5e229); --text: var(--ds-text, #b6c2cf); --text-subtle: var(--ds-text-subtle, #9fadbc); --text-subtlest: var(--ds-text-subtlest, #8c9bab);
+    --inverse-bg: var(--ds-background-neutral-bold, #9fadbc); --inverse-text: var(--ds-text-inverse, #1d2125);
+    --danger-text: var(--ds-text-danger, #fd9891); --danger-bg: var(--ds-background-danger, #42221f); --danger-border: var(--ds-border-danger, #e2483d);
+    --warning-text: var(--ds-text-warning, #fea362); --warning-bg: var(--ds-background-warning, #533f04);
+    --discovery-text: var(--ds-text-discovery, #b8acf6); --discovery-bg: var(--ds-background-discovery, #2b273f);
+    --select: var(--ds-background-selected, #1c2b41); --brand: var(--ds-text-brand, #579dff);
+  }
+}
+* { box-sizing: border-box; }
+html, body { overflow-x: clip; margin: 0; background: var(--surface); color: var(--text); font: 14px/1.5 var(--font); }
+.page { max-width: 1120px; margin: 0 auto; padding: var(--s4) var(--s2) var(--s6); }
+.label { font-size: 12px; color: var(--text-subtlest); font-weight: 500; }
+.mono { font-family: var(--mono); font-size: 12px; }
+.key { color: var(--brand); }
+.ok-text { color: var(--success-icon); }
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.01em; overflow-wrap: break-word; min-width: 0; }
+
+/* Header + brief */
+header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; padding-bottom: var(--s2); border-bottom: 1px solid var(--border); }
+header h1 { font-size: 24px; }
+header p { margin: 4px 0 0; color: var(--text-subtle); max-width: 560px; }
+.brief { display: flex; align-items: center; gap: var(--s1); flex-wrap: wrap; }
+.field { display: flex; align-items: center; gap: 6px; padding: 0 10px; height: 32px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-raised); }
+.field b { font-weight: 600; }
+.btn { height: 32px; padding: 0 14px; border-radius: var(--radius); border: 1px solid transparent; font: 600 14px var(--font); cursor: pointer; }
+.btn.primary { background: var(--primary-bg); color: var(--primary-text); }
+.btn.subtle { background: transparent; color: var(--text-subtle); border-color: var(--border); }
+.btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; transition: none; }
+
+/* Verdict band */
+.verdict { margin-top: var(--s3); background: var(--inverse-bg); color: var(--inverse-text); border-radius: 6px; padding: var(--s3) var(--s4); display: grid; grid-template-columns: auto 1fr auto; gap: var(--s4); align-items: center; }
+.verdict .label { color: inherit; opacity: .72; }
+.score { font-size: 72px; line-height: .9; font-weight: 600; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.score small { font-size: 20px; opacity: .6; letter-spacing: 0; font-weight: 500; }
+.counts { display: flex; gap: var(--s3); flex-wrap: wrap; }
+.count b { display: block; font-size: 28px; line-height: 1.1; font-weight: 600; font-variant-numeric: tabular-nums; }
+.verdict .meta { margin-top: 6px; opacity: .8; font-size: 13px; }
+.trend { width: 180px; }
+.trend svg { display: block; width: 180px; height: 56px; overflow: visible; }
+
+/* Section headings */
+.section { margin-top: var(--s6); }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s1) var(--s2); margin-bottom: var(--s2); }
+.section-head h2 { flex: none; }
+.section-head p { flex: 1 1 280px; text-align: right; }
+@media (max-width: 760px) { .section-head p { text-align: left; } }
+.section-head h2 { font-size: 18px; }
+.section-head p { margin: 0; color: var(--text-subtle); font-size: 13px; }
+
+/* The walk */
+.walk { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.rail-head, .rail { display: grid; grid-template-columns: minmax(200px, 300px) 1fr; }
+.rail-head { background: var(--surface-sunken); border-bottom: 1px solid var(--border); padding: 10px var(--s2); }
+.stations-head { display: grid; grid-template-columns: repeat(5, 1fr); }
+.stations-head span { text-align: center; }
+.rail { padding: 14px var(--s2); border-bottom: 1px solid var(--border); align-items: center; background: var(--surface-raised); }
+.rail:last-child { border-bottom: 0; }
+.rail .req .key { font-family: var(--mono); font-size: 12px; color: var(--brand); }
+.rail .req .sum { color: var(--text); font-size: 13px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.track { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); align-items: start; }
+.track .line { position: absolute; left: 10%; right: 10%; top: 9px; height: 2px; background: var(--border); }
+.track .done { position: absolute; left: 10%; top: 9px; height: 2px; background: var(--border-bold); transform-origin: left; transform: scaleX(0); width: 0; }
+.st { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 1; }
+.dot { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-raised); border: 2px solid var(--border); opacity: 0; transform: scale(.6); transition: opacity .18s, transform .18s; }
+.st.on .dot { opacity: 1; transform: scale(1); }
+.st.ok .dot { border-color: var(--success-icon); }
+.st.ok .dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--success-icon); }
+.st.broken .dot { border-color: var(--danger-border); background: var(--danger-bg); }
+.st.broken .dot::after { content: "×"; color: var(--danger-text); font-weight: 700; font-size: 14px; line-height: 1; }
+.st.na .dot { border-style: dashed; }
+.st.na .dot::after { content: ""; width: 6px; height: 2px; background: var(--text-subtlest); }
+.st.pending .dot { border-style: dotted; opacity: .5 !important; }
+.src { font-size: 11px; color: var(--text-subtlest); min-height: 14px; text-align: center; }
+.st.broken .src { color: var(--danger-text); font-weight: 600; }
+.gap { grid-column: 2; margin-top: 8px; font-size: 12px; color: var(--danger-text); opacity: 0; transition: opacity .25s; }
+.rail.revealed .gap { opacity: 1; }
+.walker { position: absolute; top: 3px; left: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--text); box-shadow: 0 0 0 4px var(--surface-raised); margin-left: -7px; z-index: 2; opacity: 0; will-change: transform; }
+
+/* Findings log */
+.log { display: grid; gap: var(--s2); }
+.nc { display: grid; grid-template-columns: 72px 1fr auto; gap: var(--s2); padding: var(--s2) var(--s3); border: 1px solid var(--border); border-left: 3px solid var(--sev-border, var(--border)); border-radius: var(--radius); background: var(--surface-raised); }
+.nc.major { --sev-border: var(--danger-border); }
+.nc.minor { --sev-border: var(--warning-border); }
+.nc.observation { --sev-border: var(--discovery-border); }
+.nc .num { font-family: var(--mono); font-size: 13px; color: var(--text-subtlest); padding-top: 2px; }
+.tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 12px; font-weight: 600; }
+.tag.major { background: var(--danger-bg); color: var(--danger-text); }
+.tag.minor { background: var(--warning-bg); color: var(--warning-text); }
+.tag.observation { background: var(--discovery-bg); color: var(--discovery-text); }
+.nc h3 { font-size: 15px; margin: 6px 0 2px; }
+.nc .where { color: var(--text-subtle); font-size: 13px; }
+.nc blockquote { margin: 10px 0 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--border-bold); font-size: 15px; line-height: 1.45; color: var(--text); }
+.nc .clauses { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.nc .clauses span { font-family: var(--mono); font-size: 11.5px; color: var(--text-subtle); padding: 1px 6px; border: 1px solid var(--border); border-radius: 3px; }
+.nc .actions { display: flex; flex-direction: column; gap: 6px; }
+
+/* Ledger */
+.ledger { width: 100%; border-collapse: collapse; }
+.ledger th { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.ledger td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.chips span { display: inline-block; margin: 0 4px 2px 0; font-size: 12px; color: var(--text-subtle); border: 1px solid var(--border); padding: 0 6px; border-radius: 3px; }
+.weight { height: 6px; background: var(--surface-sunken); border-radius: 3px; width: 120px; overflow: hidden; }
+.weight i { display: block; height: 100%; background: var(--border-bold); }
+footer { margin-top: var(--s6); padding-top: var(--s2); border-top: 1px solid var(--border); color: var(--text-subtlest); font-size: 12px; }
+
+@media (max-width: 760px) {
+  .verdict { grid-template-columns: 1fr; gap: var(--s2); }
+  .rail-head { display: none; }
+  .rail { grid-template-columns: 1fr; gap: 10px; }
+  .gap { grid-column: 1; }
+  .nc { grid-template-columns: 1fr; }
+  .nc .actions { flex-direction: row; }
+  .ledger .w { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dot, .gap { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <h1>Walkdown</h1>
+      <p>Rehearse an IEC 62304 and ISO 14971 audit. Walkdown samples requirements the way an auditor would and stops at the first broken link.</p>
+    </div>
+    <form class="brief" onsubmit="event.preventDefault(); walkAll();">
+      <span class="field"><span class="label">Project</span><b class="mono">GLU</b></span>
+      <span class="field"><span class="label">Samples</span><b>10</b></span>
+      <span class="field"><span class="label">Class</span><b>Any</b></span>
+      <button class="btn primary" type="submit">Run rehearsal</button>
+    </form>
+  </header>
+
+  <section class="verdict" aria-label="Verdict">
+    <div>
+      <div class="label">Readiness</div>
+      <div class="score" id="score">0<small> / 100</small></div>
+    </div>
+    <div>
+      <div class="counts" id="counts"></div>
+      <div class="meta" id="meta"></div>
+    </div>
+    <div class="trend">
+      <div class="label">Last runs</div>
+      <svg id="trend" viewBox="0 0 180 56" aria-label="Readiness trend"></svg>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="walk-h">
+    <div class="section-head">
+      <h2 id="walk-h">The walk</h2>
+      <p>Each sampled requirement, traced from design to release. The marker stops at the first broken link.</p>
+    </div>
+    <div class="walk" id="walk">
+      <div class="rail-head"><span class="label">Requirement</span><div class="stations-head label"><span>Design</span><span>Code</span><span>Test</span><span>Risk control</span><span>Release</span></div></div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="log-h">
+    <div class="section-head">
+      <h2 id="log-h">Auditor's log</h2>
+      <p>Graded as an auditor would. Major findings first.</p>
+    </div>
+    <div class="log" id="log"></div>
+  </section>
+
+  <section class="section" aria-labelledby="ledger-h">
+    <div class="section-head">
+      <h2 id="ledger-h">Sampling ledger</h2>
+      <p>Why each requirement was picked. Higher safety class and recent change raise the odds.</p>
+    </div>
+    <table class="ledger">
+      <thead><tr><th class="label">Requirement</th><th class="label">Reasons</th><th class="label w">Weight</th><th class="label">Result</th></tr></thead>
+      <tbody id="ledger"></tbody>
+    </table>
+  </section>
+
+  <footer>Rehearsal, not a formal audit opinion. Grading is rule-based: the same data always gives the same result.</footer>
+</div>
+
+<script>
+const RUN = __DATA__;
+const SRC = { confluence: 'Confluence', 'teamwork-graph': 'Teamwork Graph', jira: 'Jira', 'jira-development': 'Jira dev info', 'remote-link': 'Link' };
+const STEP_CLAUSE_SHORT = (c) => c.replace(/\s*\(.*\)/, '');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function verdict() {
+  const c = RUN.counts;
+  $('counts').innerHTML = `
+    <div class="count major"><span class="label">Major</span><b>${c.major}</b></div>
+    <div class="count"><span class="label">Minor</span><b>${c.minor}</b></div>
+    <div class="count"><span class="label">Observations</span><b>${c.observation}</b></div>`;
+  $('meta').textContent = `Sampled ${RUN.sampleSize} of ${RUN.population} requirements in ${RUN.projectKey}. ${RUN.traces.filter((t) => !t.brokenAt).length} traces complete.`;
+  const pts = RUN.history.map((h) => h.readiness);
+  const x = (i) => (pts.length === 1 ? 90 : (i * 170) / (pts.length - 1) + 5);
+  const y = (v) => 50 - (v / 100) * 44;
+  $('trend').innerHTML = `<line x1="0" x2="180" y1="${y(100)}" y2="${y(100)}" stroke="currentColor" stroke-opacity=".2" stroke-dasharray="2 3"/>
+    <polyline fill="none" stroke="currentColor" stroke-width="2" points="${pts.map((v, i) => x(i) + ',' + y(v)).join(' ')}"/>
+    ${pts.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${i === pts.length - 1 ? 4 : 2.5}" fill="currentColor"/>`).join('')}`;
+  // Count the score up.
+  const target = RUN.readiness, t0 = performance.now(), dur = reduce ? 0 : 700;
+  const tick = (now) => {
+    const k = dur ? Math.min(1, (now - t0) / dur) : 1;
+    $('score').firstChild.nodeValue = Math.round(target * (1 - Math.pow(1 - k, 3)));
+    if (k < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function rails() {
+  const walk = $('walk');
+  walk.querySelectorAll('.rail').forEach((n) => n.remove());
+  RUN.traces.forEach((t) => {
+    const row = document.createElement('div');
+    row.className = 'rail';
+    const broken = t.steps.find((s) => s.status === 'broken');
+    row.innerHTML = `
+      <div class="req"><div class="key">${esc(t.key)}</div><div class="sum">${esc(t.summary)}</div></div>
+      <div class="track"><div class="line"></div><div class="done"></div><div class="walker"></div>
+        ${t.steps.map((s) => {
+          const cls = { ok: 'ok', broken: 'broken', 'n/a': 'na', 'not-reached': 'pending' }[s.status];
+          const src = s.status === 'ok' && s.evidence && s.evidence[0] ? SRC[s.evidence[0].source] || '' : s.status === 'broken' ? 'Missing' : s.status === 'n/a' ? 'n/a' : '';
+          return `<div class="st ${cls}" title="${esc(s.label)}${s.gap ? ': ' + esc(s.gap) : ''}"><span class="dot"></span><span class="src">${src}</span></div>`;
+        }).join('')}
+      </div>
+      ${broken ? `<div class="gap">${esc(broken.gap)}</div>` : ''}`;
+    walk.appendChild(row);
+  });
+}
+
+// The signature moment: a marker walks each rail and stops at the first broken link.
+function walkAll() {
+  rails();
+  verdict();
+  const rows = [...document.querySelectorAll('.rail')];
+  rows.forEach((row, r) => {
+    const sts = [...row.querySelectorAll('.st')];
+    const stopAt = Math.max(0, sts.findIndex((s) => s.classList.contains('broken')));
+    const last = sts.some((s) => s.classList.contains('broken')) ? stopAt : sts.length - 1;
+    const walker = row.querySelector('.walker');
+    const done = row.querySelector('.done');
+    const per = reduce ? 0 : 140;
+    const start = reduce ? 0 : r * 70;
+    sts.forEach((s, i) => {
+      if (i > last && !s.classList.contains('pending')) return;
+      setTimeout(() => s.classList.add('on'), start + Math.min(i, last) * per + (i > last ? per : 0));
+    });
+    const pct = (i) => 10 + i * 20; // station centres at 10%, 30% … 90%
+    if (reduce) {
+      done.style.width = `${pct(last) - 10}%`; done.style.transform = 'scaleX(1)';
+      row.classList.add('revealed');
+      return;
+    }
+    const w = row.querySelector('.track').getBoundingClientRect().width;
+    const px = (p) => `translateX(${(p / 100) * w}px)`;
+    walker.animate(
+      [{ transform: px(10), opacity: 1 }, { transform: px(pct(last)), opacity: 1 }, { transform: px(pct(last)), opacity: 0 }],
+      { duration: last * per + 260, delay: start, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }
+    );
+    done.style.width = `${pct(last) - 10}%`;
+    done.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: Math.max(1, last * per), delay: start, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+    setTimeout(() => row.classList.add('revealed'), start + last * per + 120);
+  });
+}
+
+function log() {
+  $('log').innerHTML = RUN.findings.map((f, i) => `
+    <article class="nc ${f.severity}">
+      <div class="num">NC-${String(i + 1).padStart(2, '0')}</div>
+      <div>
+        <span class="tag ${f.severity}">${f.severity === 'observation' ? 'Observation' : f.severity === 'major' ? 'Major nonconformity' : 'Minor nonconformity'}</span>
+        <h3><span class="mono key">${esc(f.key)}</span> ${esc(f.stepLabel.toLowerCase())} link broken</h3>
+        <div class="where">${esc(f.summary)}. ${esc(f.gap)}</div>
+        <blockquote>“${esc(f.question)}”</blockquote>
+        <div class="clauses">${f.clauses.map((c) => `<span>${esc(STEP_CLAUSE_SHORT(c))}</span>`).join('')}</div>
+      </div>
+      <div class="actions"><button class="btn subtle" type="button">Ask on ticket</button><button class="btn subtle" type="button">Open ${esc(f.key)}</button></div>
+    </article>`).join('') || '<p>Every sampled trace is complete.</p>';
+}
+
+function ledger() {
+  const max = Math.max(...RUN.sample.map((s) => weightOf(s)));
+  $('ledger').innerHTML = RUN.sample.map((s) => {
+    const t = RUN.traces.find((x) => x.key === s.key);
+    const f = RUN.findings.find((x) => x.key === s.key);
+    return `<tr>
+      <td><span class="mono key">${esc(s.key)}</span></td>
+      <td class="chips">${s.reason.split(', ').map((r) => `<span>${esc(r[0].toUpperCase() + r.slice(1))}</span>`).join('')}</td>
+      <td class="w"><div class="weight"><i style="width:${(weightOf(s) / max) * 100}%"></i></div></td>
+      <td>${f ? `<span class="tag ${f.severity}">${f.severity[0].toUpperCase() + f.severity.slice(1)}</span>` : '<span class="label ok-text">Complete</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+function weightOf(s) { return ({ A: 1, B: 2, C: 3 }[s.safetyClass] || 1) * (/safety/.test(s.reason) ? 2 : 1) * (/changed/.test(s.reason) ? 1.5 : 1); }
+
+walkAll(); log(); ledger();
+</script>
+</body>
+</html>
