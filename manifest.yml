@@ -2,22 +2,68 @@ modules:
   rovo:agent:
     - key: walkdown-auditor
       name: Walkdown Auditor
-      description: A mock medical-device software auditor. Samples requirements and
-        walks each trace end to end.
+      description: A mock medical-device software auditor. Samples requirements by risk, walks each trace end to end and grades the gaps like a real audit.
       prompt: resource:agent-prompts;auditor.txt
       conversationStarters:
-        - Trace requirement GLU-1 like an auditor would
-        - What evidence is missing for GLU-1?
+        - Run an audit rehearsal on GLU, 10 samples
+        - What are the open findings?
+        - Trace GLU-2 like an auditor would
+        - Is our readiness improving?
       actions:
+        - run-rehearsal
+        - get-findings
+        - get-readiness
         - trace-requirement
         - post-auditor-question
   action:
+    - key: run-rehearsal
+      name: Run audit rehearsal
+      function: runRehearsalAction
+      actionVerb: GET
+      description: Samples requirements weighted by IEC 62304 safety class and risk, walks each trace (design, implementation, verification, risk control, release) and grades findings as major, minor or observation with clause references. Returns the readiness score.
+      inputs:
+        projectKey:
+          title: Project key
+          type: string
+          required: false
+          description: Jira project key holding the requirements. Defaults to GLU.
+        samples:
+          title: Number of samples
+          type: integer
+          required: false
+          description: How many requirements to sample, 1 to 50. Defaults to 10.
+        safetyClass:
+          title: Minimum safety class
+          type: string
+          required: false
+          description: Only sample requirements of this IEC 62304 class or higher, A, B or C.
+    - key: get-findings
+      name: Get audit findings
+      function: getFindings
+      actionVerb: GET
+      description: Returns the findings, readiness score and auditor questions from the latest rehearsal.
+      inputs:
+        projectKey:
+          title: Project key
+          type: string
+          required: false
+          description: Jira project key. Defaults to GLU.
+    - key: get-readiness
+      name: Get readiness trend
+      function: getReadiness
+      actionVerb: GET
+      description: Returns the readiness score of recent rehearsals, oldest first, to show whether audit readiness is improving.
+      inputs:
+        projectKey:
+          title: Project key
+          type: string
+          required: false
+          description: Jira project key. Defaults to GLU.
     - key: trace-requirement
       name: Trace a requirement
       function: traceRequirement
       actionVerb: GET
-      description: Walks one Jira requirement's trace (links, remote links, Teamwork
-        Graph) and returns each link with its evidence source.
+      description: Walks one requirement's trace end to end and returns each link with its evidence and source, the first broken link and the auditor's finding.
       inputs:
         issueKey:
           title: Issue key
@@ -39,24 +85,28 @@ modules:
           title: Question
           type: string
           required: true
-          description: The auditor's question, for example "Show me the verification
-            record for this requirement."
+          description: The auditor's question, for example "Show me the verification record for GLU-2."
   rovo:skill:
     - key: audit-sampling
       source:
         dir: skills/audit-sampling
       dependencies:
         tools:
+          - run-rehearsal
           - trace-requirement
+          - get-findings
   rovo:mcp:
     - key: walkdown-mcp
       name: Walkdown
       tools:
+        - run-rehearsal
+        - get-findings
+        - get-readiness
         - trace-requirement
   jira:workflowValidator:
     - key: trace-validator
       name: Walkdown trace check
-      description: Blocks a transition when the requirement's trace is broken.
+      description: Blocks a transition when a requirement's trace (design, implementation, verification, risk control) is broken.
       function: validateTrace
       projectTypes:
         - company-managed
@@ -66,6 +116,20 @@ modules:
       function: onIssueCreated
       events:
         - avi:jira:created:issue
+  consumer:
+    - key: walkdown-sample-consumer
+      queue: walkdown-sample
+      function: sampleConsumer
+    - key: walkdown-rehearsal-consumer
+      queue: walkdown-rehearsal
+      function: rehearsalConsumer
+  devops:developmentInfoProvider:
+    - key: walkdown-sample-devinfo
+      name:
+        value: GlucoLoop sample repository
+      homeUrl: https://developer.atlassian.com/platform/forge/
+      logoUrl: https://developer.atlassian.com/favicon.ico
+      documentationUrl: https://developer.atlassian.com/platform/forge/
   jira:globalPage:
     - key: walkdown-home
       resource: main
@@ -76,12 +140,24 @@ modules:
   function:
     - key: traceRequirement
       handler: index.traceRequirement
+    - key: runRehearsalAction
+      handler: index.runRehearsalAction
+    - key: getFindings
+      handler: index.getFindings
+    - key: getReadiness
+      handler: index.getReadiness
     - key: postAuditorQuestion
       handler: index.postAuditorQuestion
     - key: validateTrace
       handler: index.validateTrace
     - key: onIssueCreated
       handler: index.onIssueCreated
+    - key: rehearsalConsumer
+      handler: index.rehearsalConsumer
+      timeoutSeconds: 900
+    - key: sampleConsumer
+      handler: index.sampleConsumer
+      timeoutSeconds: 900
     - key: resolver
       handler: index.resolver
 resources:
@@ -94,7 +170,19 @@ permissions:
     - read:jira-work
     - write:jira-work
     - read:jira-user
+    - manage:jira-configuration
+    - manage:jira-project
+    - write:dev-info:jira
+    - read:dev-info:jira
     - storage:app
+    - read:confluence-content.summary
+    - write:confluence-content
+    - write:confluence-space
+    - read:confluence-space.summary
+    - read:page:confluence
+    - write:page:confluence
+    - read:space:confluence
+    - write:space:confluence
     - read:graph:issue:jira
     - read:graph:page:confluence
     - read:graph:commit:external

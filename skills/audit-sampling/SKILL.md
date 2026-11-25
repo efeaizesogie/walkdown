@@ -1,13 +1,15 @@
 ---
 name: audit-sampling
-description: Rehearse a medical-device software audit. Trace sampled Jira requirements end to end (design, code, verification, risk control, release) and report the first broken link as an auditor would.
+description: Rehearse a medical-device software audit (IEC 62304, ISO 14971, ISO 13485). Sample Jira requirements by risk, walk each trace end to end and grade the gaps as major, minor or observation, with clause references and a readiness score.
 ---
 
 # Audit sampling
 
-Use this skill when someone asks to rehearse an audit, check traceability, or test whether a requirement is audit-ready.
+Use this skill when someone asks to rehearse an audit, check traceability, or test whether requirements are audit-ready.
 
-1. For each requirement key, call `trace-requirement`.
-2. Report each link in order: design → implementation → verification → risk control → release.
-3. Stop at the first broken link. Phrase the gap as an auditor's request for evidence, e.g. "Show me the verification record for GLU-12."
-4. Never claim evidence exists unless the action returned it.
+1. Call `run-rehearsal` with the project key, number of samples and, if given, the minimum IEC 62304 class.
+2. Report the readiness score and the counts of major, minor and observation findings.
+3. For each finding, give the requirement key, the broken link, the clause and the auditor's question.
+4. To explain one requirement in depth, call `trace-requirement`.
+5. For the latest results without a new run, call `get-findings`.
+6. Never claim evidence exists unless an action returned it, and never change a finding's severity.
