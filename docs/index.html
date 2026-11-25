@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Walkdown documentation</title>
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+<main class="page">
+  <h1>Walkdown</h1>
+  <p>A mock auditor for medical-device software teams, inside Jira. Walkdown samples requirements the way an auditor would, walks each trace from design to code, verification, risk control and release, and stops at the first broken link. It grades gaps as major, minor or observation, with IEC 62304, ISO 14971, ISO 13485 and 21 CFR 820.30 references.</p>
+
+  <h2>Get started</h2>
+  <ol>
+    <li>Install Walkdown in Jira and Confluence.</li>
+    <li>Open <strong>Apps → Walkdown</strong> and click <strong>Load the GlucoLoop sample</strong>. It builds a fictional insulin-dosing project with a few traces broken on purpose.</li>
+    <li>Click <strong>Run rehearsal</strong>, then read the auditor's log.</li>
+    <li>Open a requirement to see its <strong>Walkdown trace</strong> panel, or ask <strong>Walkdown Auditor</strong> in Rovo.</li>
+  </ol>
+
+  <h2>Use it on your own project</h2>
+  <table>
+    <tr><th>What</th><th>How Walkdown recognises it</th></tr>
+    <tr><td>Requirement</td><td>label <code>wd-requirement</code></td></tr>
+    <tr><td>Safety class</td><td>label <code>iec62304-class-a</code>, <code>-b</code> or <code>-c</code>; <code>safety-related</code>; <code>changed-since-release</code></td></tr>
+    <tr><td>Verification test</td><td>label <code>wd-test</code>, linked with <em>Verifies</em>; result label <code>result-pass</code>, <code>result-fail</code> or <code>result-not-run</code></td></tr>
+    <tr><td>Hazard</td><td>label <code>wd-risk</code>, linked with <em>Risk control</em> (requirement mitigates hazard); <code>control-verified</code> once effectiveness is verified</td></tr>
+    <tr><td>Design</td><td>a Confluence page linked to the requirement</td></tr>
+    <tr><td>Code</td><td>commits or pull requests linked to the work item, read through Teamwork Graph and Jira development information</td></tr>
+    <tr><td>Release</td><td>Fix version</td></tr>
+  </table>
+
+  <h2>Optional admin steps</h2>
+  <ul>
+    <li><strong>Release gate:</strong> add the <em>Walkdown trace check</em> rule to your workflow's release transition (Workflow editor → transition → Validate details).</li>
+    <li><strong>MCP:</strong> in Atlassian Administration → Connected apps → Walkdown, click <em>Enable tools</em> on each installation, then add <code>https://mcp.atlassian.com/forge/b76b5155-9742-4c85-b2ec-10bf789babad</code> to your MCP client.</li>
+  </ul>
+
+  <h2>More</h2>
+  <ul>
+    <li><a href="https://github.com/efeaizesogie/walkdown#readme">Full README</a></li>
+    <li><a href="privacy.html">Privacy policy</a></li>
+    <li><a href="https://github.com/efeaizesogie/walkdown/issues">Support (GitHub Issues)</a></li>
+  </ul>
+</main>
+</body>
+</html>

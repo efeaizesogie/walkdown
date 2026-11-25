@@ -40,9 +40,9 @@ Walkdown samples your requirements the way an auditor would, weighted by IEC 623
 - **Screenshots:** 1840×900 captures from the demo site.
 
 ## Links needed (must be public URLs)
-- Documentation: the README (for example a public GitHub repo or a GitHub Pages page)
-- Privacy policy: a short page (draft below)
-- Support: an email address or URL you're happy to publish
+- Documentation: https://efeaizesogie.github.io/walkdown/
+- Privacy policy: https://efeaizesogie.github.io/walkdown/privacy.html
+- Support: https://github.com/efeaizesogie/walkdown/issues
 - Partner (vendor) profile: your Developer Space name, logo and contact
 
 ## Scope justifications
@@ -67,4 +67,4 @@ Walkdown samples your requirements the way an auditor would, weighted by IEC 623
 - **Data deletion:** uninstalling the app removes Forge storage. Sample content created by the loader is normal Jira/Confluence content the customer can delete.
 
 ## Privacy policy (draft text for a public page)
-> Walkdown runs entirely on Atlassian Forge. It does not send data to any external service. It stores rehearsal results (work item keys and summaries, grades and scores, and the Atlassian account ID of the person who ran each rehearsal) in Forge app storage on your Atlassian site. That data is removed when the app is uninstalled. Walkdown does not use cookies or trackers and does not call AI models; Rovo features use your organisation's Rovo service. Contact: <support email>.
+> Walkdown runs entirely on Atlassian Forge. It does not send data to any external service. It stores rehearsal results (work item keys and summaries, grades and scores, and the Atlassian account ID of the person who ran each rehearsal) in Forge app storage on your Atlassian site. That data is removed when the app is uninstalled. Walkdown does not use cookies or trackers and does not call AI models; Rovo features use your organisation's Rovo service. Contact: https://github.com/efeaizesogie/walkdown/issues.

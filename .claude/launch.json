@@ -1,6 +1,29 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "mockup", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "4321", "--directory", "mockup"], "port": 4321 }
+    {
+      "name": "mockup",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4321",
+        "--directory",
+        "mockup"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "docs",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4322",
+        "--directory",
+        "docs"
+      ],
+      "port": 4322
+    }
   ]
 }

@@ -1,0 +1,25 @@
+/* Plain documentation pages for Walkdown, in the app's Atlassian-token palette. */
+:root {
+  --bg: #ffffff;
+  --text: #172b4d;
+  --muted: #626f86;
+  --border: #091e4224;
+  --brand: #0c66e4;
+  --sunken: #f7f8f9;
+  --font: "Atlassian Sans", ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1d2125; --text: #b6c2cf; --muted: #8c9bab; --border: #a6c5e229; --brand: #579dff; --sunken: #161a1d; }
+}
+html, body { overflow-x: clip; margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--font); }
+.page { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+h1, h2 { line-height: 1.25; overflow-wrap: break-word; }
+h1 { font-size: 32px; margin: 8px 0; }
+h2 { font-size: 20px; margin-top: 32px; }
+a { color: var(--brand); }
+a:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.muted { color: var(--muted); }
+code { font-family: var(--mono); font-size: 14px; background: var(--sunken); padding: 1px 4px; border-radius: 3px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
