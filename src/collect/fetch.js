@@ -91,7 +91,9 @@ async function devInfoCommits() {
 // Persisted Cypher query (registered for this app):
 // MATCH (i:JiraWorkItem {ari: $id})-[:jira_work_item_links_external_commit]->(c:ExternalCommit)
 // RETURN collect(distinct c) as commits
-const COMMITS_QUERY_KEY = '297814b9-30f1-45bd-abed-c613e39f8b60';
+// Each Forge app registers its own persisted query, so the key is per app: set
+// WALKDOWN_COMMITS_QUERY_KEY with `forge variables set` (defaults to the main app's key).
+const COMMITS_QUERY_KEY = process.env.WALKDOWN_COMMITS_QUERY_KEY || '297814b9-30f1-45bd-abed-c613e39f8b60';
 const commitsQuery = (fields) => `query walkdown_issueCommits($queryKey: String!, $queryParams: CypherRequestParams) {
   customQuery(queryKey: $queryKey, queryParams: $queryParams, first: 25) {
     edges { node { columns { key value { __typename
