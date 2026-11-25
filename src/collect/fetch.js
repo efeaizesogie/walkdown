@@ -66,6 +66,71 @@ async function twgPullRequests(cloudId, issueId, notes) {
   }
 }
 
+// Commits Walkdown stored as Jira development information (the sample repository).
+// Real repositories reach Walkdown through Teamwork Graph or code links instead.
+const SAMPLE_REPO = 'glucoloop-sample';
+async function devInfoCommits() {
+  const byIssue = new Map();
+  try {
+    const res = await api.asApp().requestJira(route`/rest/devinfo/0.10/repository/${SAMPLE_REPO}`, {
+      headers: { Accept: 'application/json' },
+    });
+    if (res.status !== 200) return byIssue;
+    const repo = await res.json();
+    for (const c of repo.commits || [])
+      for (const k of c.issueKeys || []) {
+        if (!byIssue.has(k)) byIssue.set(k, []);
+        byIssue.get(k).push({ label: `${c.displayId} ${c.message}`, url: c.url });
+      }
+  } catch (e) {
+    console.warn('dev info read failed', String(e && e.message));
+  }
+  return byIssue;
+}
+
+// Persisted Cypher query (registered for this app):
+// MATCH (i:JiraWorkItem {ari: $id})-[:jira_work_item_links_external_commit]->(c:ExternalCommit)
+// RETURN collect(distinct c) as commits
+const COMMITS_QUERY_KEY = '297814b9-30f1-45bd-abed-c613e39f8b60';
+const commitsQuery = (fields) => `query walkdown_issueCommits($queryKey: String!, $queryParams: CypherRequestParams) {
+  customQuery(queryKey: $queryKey, queryParams: $queryParams, first: 25) {
+    edges { node { columns { key value { __typename
+      ... on CypherQueryResultListNode { nodes { id data { __typename ${fields} } } }
+      ... on CypherQueryResultNode { id data { __typename ${fields} } }
+    } } } }
+  }
+}`;
+
+async function twgCommits(cloudId, issueId, notes) {
+  const vars = { queryKey: COMMITS_QUERY_KEY, queryParams: { id: `ari:cloud:jira:${cloudId}:issue/${issueId}` } };
+  for (const fields of ['... on ExternalCommit { displayName url }', '']) {
+    try {
+      const res = await api.asUser().requestTeamworkGraph(commitsQuery(fields), vars);
+      const body = typeof res.json === 'function' ? await res.json() : res;
+      if (body.errors && body.errors.length) {
+        if (fields) continue; // retry without optional fields
+        notes.add(`Teamwork Graph commits: ${body.errors[0].message}`);
+        return [];
+      }
+      const out = [];
+      for (const edge of (body.data && body.data.customQuery && body.data.customQuery.edges) || [])
+        for (const col of edge.node.columns || []) {
+          const v = col.value || {};
+          for (const n of v.nodes || (v.id ? [v] : [])) {
+            const d = n.data || {};
+            out.push({ label: d.displayName || `Commit ${String(n.id).split('/').pop().slice(0, 12)}`, url: d.url });
+          }
+        }
+      return out;
+    } catch (e) {
+      if (fields) continue;
+      notes.add(`Teamwork Graph commits unavailable: ${String(e.message || e)}`);
+      return [];
+    }
+  }
+  return [];
+}
+
 /**
  * Loads requirements for a project. Light: only what sampling needs.
  */
@@ -102,13 +167,24 @@ async function loadEvidence(requester, keys, opts) {
   const related = relatedKeys.size ? await search(requester, `key in (${[...relatedKeys].join(',')})`, 'summary,labels,status') : [];
   const details = new Map(related.map((i) => [i.key, i]));
 
+  const devInfo = await devInfoCommits();
+
   const inputs = await Promise.all(
     reqs.map(async (r) => {
-      const [rl, prs] = await Promise.all([
+      const [rl, prs, commits] = await Promise.all([
         remoteLinks(requester, r.key),
         opts.useGraph ? twgPullRequests(opts.cloudId, r.id, notes) : Promise.resolve([]),
+        opts.useGraph ? twgCommits(opts.cloudId, r.id, notes) : Promise.resolve([]),
       ]);
-      return toTraceInput(r, { baseUrl: opts.baseUrl, details, remoteLinks: rl, twg: { pullRequests: prs } });
+      // Prefer the graph; fall back to development information when the graph has nothing.
+      const fromGraph = prs.length + commits.length > 0;
+      return toTraceInput(r, {
+        baseUrl: opts.baseUrl,
+        details,
+        remoteLinks: rl,
+        twg: { pullRequests: prs, commits },
+        devInfo: fromGraph ? [] : devInfo.get(r.key) || [],
+      });
     })
   );
   // Keep the caller's order.

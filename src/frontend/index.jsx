@@ -1,7 +1,7 @@
 // Functional page for the build phase. The polished design pass comes later.
 import React, { useEffect, useState } from 'react';
 import ForgeReconciler, {
-  Stack, Inline, Heading, Text, Button, Lozenge, SectionMessage, Select, Textfield, DynamicTable, Box, Strong,
+  Stack, Inline, Heading, Text, Button, Lozenge, SectionMessage, Select, Textfield, DynamicTable, Strong, Label,
 } from '@forge/react';
 import { invoke } from '@forge/bridge';
 
@@ -23,18 +23,20 @@ const App = () => {
   const [sample, setSample] = useState({ state: 'idle' });
 
   const refresh = async () => {
-    setRun(await invoke('latest', { projectKey: project }));
-    setHistory(await invoke('history', { projectKey: project }));
+    const latest = await invoke('latest', { projectKey: project });
+    setRun(latest && latest.counts ? latest : null);
+    const h = await invoke('history', { projectKey: project });
+    setHistory(Array.isArray(h) ? h : []);
   };
 
   useEffect(() => {
     refresh();
-    invoke('sampleStatus').then(setSample);
+    invoke('sampleStatus').then((s) => setSample(s && s.state ? s : { state: 'idle' }));
   }, []);
 
   useEffect(() => {
     if (sample.state !== 'queued' && sample.state !== 'running') return undefined;
-    const t = setTimeout(() => invoke('sampleStatus').then(setSample), 3000);
+    const t = setTimeout(() => invoke('sampleStatus').then((s) => setSample(s && s.state ? s : { state: 'idle' })), 3000);
     return () => clearTimeout(t);
   }, [sample]);
 
@@ -43,9 +45,10 @@ const App = () => {
     setError('');
     try {
       const r = await invoke('runRehearsal', { projectKey: project, size: Number(size) || 10, minClass: minClass.value });
-      if (r.error) setError(r.error);
-      else setRun(r);
-      setHistory(await invoke('history', { projectKey: project }));
+      if (r && r.error) setError(r.error);
+      else if (r && r.counts) setRun(r);
+      const h = await invoke('history', { projectKey: project });
+      setHistory(Array.isArray(h) ? h : []);
     } catch (e) {
       setError(String(e.message || e));
     }
@@ -64,15 +67,24 @@ const App = () => {
         <Text>A mock auditor for medical-device software. It samples requirements by risk, walks each trace and grades the gaps.</Text>
       </Stack>
 
-      <Box>
+      <Stack space="space.100">
         <Inline space="space.200" alignBlock="end">
-          <Textfield name="project" label="Project" defaultValue={project} onChange={(e) => setProject(e.target.value.toUpperCase())} />
-          <Textfield name="size" label="Samples" defaultValue={size} onChange={(e) => setSize(e.target.value)} />
-          <Select name="class" options={CLASS_OPTIONS} value={minClass} onChange={setMinClass} />
+          <Stack space="space.050">
+            <Label labelFor="project">Project</Label>
+            <Textfield id="project" name="project" defaultValue={project} onChange={(e) => setProject(e.target.value.toUpperCase())} />
+          </Stack>
+          <Stack space="space.050">
+            <Label labelFor="size">Samples</Label>
+            <Textfield id="size" name="size" defaultValue={size} onChange={(e) => setSize(e.target.value)} />
+          </Stack>
+          <Stack space="space.050">
+            <Label labelFor="cls">Safety class</Label>
+            <Select inputId="cls" name="cls" options={CLASS_OPTIONS} value={minClass} onChange={setMinClass} />
+          </Stack>
           <Button appearance="primary" onClick={rehearse} isDisabled={busy}>{busy ? 'Walking the traces…' : 'Run rehearsal'}</Button>
           <Button onClick={loadSample} isDisabled={sample.state === 'queued' || sample.state === 'running'}>Load GlucoLoop sample</Button>
         </Inline>
-      </Box>
+      </Stack>
 
       {sample.state !== 'idle' ? (
         <SectionMessage appearance={sample.state === 'failed' ? 'error' : sample.state === 'done' ? 'success' : 'information'} title={`Sample project: ${sample.state}`}>
@@ -84,7 +96,7 @@ const App = () => {
 
       {error ? <SectionMessage appearance="warning"><Text>{error}</Text></SectionMessage> : null}
 
-      {run && !run.error ? (
+      {run && run.counts ? (
         <Stack space="space.200">
           <Inline space="space.300" alignBlock="center">
             <Heading as="h2">Readiness {run.readiness}/100</Heading>
@@ -130,4 +142,27 @@ const App = () => {
   );
 };
 
-ForgeReconciler.render(<App />);
+class Boundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+  render() {
+    if (this.state.error)
+      return (
+        <SectionMessage appearance="error" title="Walkdown hit an error">
+          <Text>{String(this.state.error && (this.state.error.stack || this.state.error.message || this.state.error)).slice(0, 600)}</Text>
+        </SectionMessage>
+      );
+    return this.props.children;
+  }
+}
+
+ForgeReconciler.render(
+  <Boundary>
+    <App />
+  </Boundary>
+);
