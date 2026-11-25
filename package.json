@@ -1,0 +1,15 @@
+{
+  "name": "walkdown",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "dependencies": {
+    "@forge/api": "latest",
+    "@forge/react": "latest",
+    "@forge/resolver": "latest",
+    "@forge/bridge": "latest",
+    "react": "^18.3.1"
+  }
+}

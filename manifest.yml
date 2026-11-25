@@ -1,0 +1,109 @@
+modules:
+  rovo:agent:
+    - key: walkdown-auditor
+      name: Walkdown Auditor
+      description: A mock medical-device software auditor. Samples requirements and
+        walks each trace end to end.
+      prompt: resource:agent-prompts;auditor.txt
+      conversationStarters:
+        - Trace requirement GLU-1 like an auditor would
+        - What evidence is missing for GLU-1?
+      actions:
+        - trace-requirement
+        - post-auditor-question
+  action:
+    - key: trace-requirement
+      name: Trace a requirement
+      function: traceRequirement
+      actionVerb: GET
+      description: Walks one Jira requirement's trace (links, remote links, Teamwork
+        Graph) and returns each link with its evidence source.
+      inputs:
+        issueKey:
+          title: Issue key
+          type: string
+          required: true
+          description: The Jira work item key of the requirement, for example GLU-12.
+    - key: post-auditor-question
+      name: Post auditor question
+      function: postAuditorQuestion
+      actionVerb: CREATE
+      description: Posts an auditor's follow-up question as a comment on a Jira work item.
+      inputs:
+        issueKey:
+          title: Issue key
+          type: string
+          required: true
+          description: The Jira work item key to comment on.
+        question:
+          title: Question
+          type: string
+          required: true
+          description: The auditor's question, for example "Show me the verification
+            record for this requirement."
+  rovo:skill:
+    - key: audit-sampling
+      source:
+        dir: skills/audit-sampling
+      dependencies:
+        tools:
+          - trace-requirement
+  rovo:mcp:
+    - key: walkdown-mcp
+      name: Walkdown
+      tools:
+        - trace-requirement
+  jira:workflowValidator:
+    - key: trace-validator
+      name: Walkdown trace check
+      description: Blocks a transition when the requirement's trace is broken.
+      function: validateTrace
+      projectTypes:
+        - company-managed
+        - team-managed
+  trigger:
+    - key: rehearsal-trigger
+      function: onIssueCreated
+      events:
+        - avi:jira:created:issue
+  jira:globalPage:
+    - key: walkdown-home
+      resource: main
+      render: native
+      resolver:
+        function: resolver
+      title: Walkdown
+  function:
+    - key: traceRequirement
+      handler: index.traceRequirement
+    - key: postAuditorQuestion
+      handler: index.postAuditorQuestion
+    - key: validateTrace
+      handler: index.validateTrace
+    - key: onIssueCreated
+      handler: index.onIssueCreated
+    - key: resolver
+      handler: index.resolver
+resources:
+  - key: agent-prompts
+    path: prompts
+  - key: main
+    path: src/frontend/index.jsx
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+    - read:jira-user
+    - storage:app
+    - read:graph:issue:jira
+    - read:graph:page:confluence
+    - read:graph:commit:external
+    - read:graph:pull-request:external
+    - read:graph:branch:external
+    - read:graph:repository:external
+    - read:graph:deployment:external
+    - read:graph:build:external
+app:
+  runtime:
+    name: nodejs22.x
+  id: ari:cloud:ecosystem::app/b76b5155-9742-4c85-b2ec-10bf789babad
