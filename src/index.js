@@ -179,7 +179,13 @@ resolver.define('loadSample', async ({ context }) => {
   return { queued: true };
 });
 
-resolver.define('sampleStatus', async () => (await kvs.get('sample:status')) || { state: 'idle' });
+resolver.define('sampleStatus', async () => {
+  const s = (await kvs.get('sample:status')) || { state: 'idle' };
+  // A load can't run longer than the 15-minute consumer limit; anything older is stale.
+  const age = s.updatedAt ? Date.now() - Date.parse(s.updatedAt) : 0;
+  if ((s.state === 'running' || s.state === 'queued') && age > 16 * 60 * 1000) return { state: 'idle' };
+  return s;
+});
 
 resolver.define('runRehearsal', async ({ payload, context }) =>
   R.runRehearsal({

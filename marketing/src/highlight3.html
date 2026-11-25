@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+:root{--bg:#f7f8f9;--card:#ffffff;--ink:#172b4d;--subtle:#44546f;--subtlest:#626f86;--border:#dcdfe4;--brand:#0c66e4;
+--font:"Segoe UI Variable Display","Segoe UI",-apple-system,Roboto,sans-serif;--mono:"Cascadia Mono",Consolas,ui-monospace,monospace}
+html,body{margin:0;width:1840px;height:900px;overflow:hidden;background:var(--bg);font-family:var(--font);color:var(--ink)}
+.wrap{display:grid;grid-template-columns:1fr 640px;gap:96px;align-items:center;height:100%;padding:0 120px;box-sizing:border-box}
+h1{font-size:56px;line-height:1.08;margin:0;letter-spacing:-0.025em;font-weight:650;max-width:760px}
+p{font-size:26px;line-height:1.45;color:var(--subtle);margin:28px 0 0;max-width:760px}
+ul{margin:36px 0 0;padding:0;list-style:none;display:grid;gap:14px;font-size:22px;color:var(--ink)}
+ul li{padding-left:28px;position:relative}
+ul li:before{content:"";position:absolute;left:0;top:13px;width:12px;height:3px;background:var(--subtle)}
+code{font-family:var(--mono);font-size:19px;color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px 26px 10px}
+.card .head{font-size:18px;font-weight:650;color:var(--ink);padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.card .head span{font-family:var(--mono);font-weight:500;color:var(--brand);margin-right:10px}
+iframe{border:0;width:100%;height:470px;display:block;zoom:1}
+</style></head><body><div class="wrap">
+<div>
+  <h1>Assign the auditor. Block broken releases.</h1>
+  <p>Every requirement carries its own trace in the ticket sidebar, and the same audit runs wherever your team works.</p>
+  <ul>
+    <li>Pick <b>Walkdown Auditor</b> in a ticket's Agents menu, or chat with it in Rovo</li>
+    <li>Create <code>Audit rehearsal: Class C, 8 samples</code> and it answers on the ticket</li>
+    <li>Call it from any MCP client through Atlassian's MCP server</li>
+    <li>A workflow rule refuses to release a requirement with a broken trace</li>
+  </ul>
+</div>
+<div class="card">
+  <div class="head"><span>GLU-6</span>Walkdown trace</div>
+  <iframe src="http://localhost:4323/index.html?panel=GLU-6" title="Walkdown trace panel"></iframe>
+</div>
+</div></body></html>
