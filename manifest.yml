@@ -203,3 +203,11 @@ app:
   runtime:
     name: nodejs22.x
   id: ari:cloud:ecosystem::app/b76b5155-9742-4c85-b2ec-10bf789babad
+  rovo:
+    tag: walkdown
+    description: Rehearse a medical-device software audit; trace requirements and grade the gaps.
+    keywords:
+      - audit
+      - iec62304
+      - traceability
+      - iso14971
