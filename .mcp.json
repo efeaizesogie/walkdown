@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "walkdown": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/forge/b76b5155-9742-4c85-b2ec-10bf789babad"
+    }
+  }
+}
