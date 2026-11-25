@@ -1,0 +1,29 @@
+When an auditor checks medical-device software, they don't read everything. They pick a few requirements, and they pull the thread.
+
+Where's the design? Show me the code. Show me the test that proved it. What could hurt a patient, and what stops it? Which release shipped it? The first missing answer becomes a finding: major, minor, or an observation.
+
+For teams building medical software, like an app that calculates insulin doses, that audit decides whether the product can ship. And most teams only find their gaps when the auditor does.
+
+Walkdown is a practice auditor that lives inside Jira. It reads the records your team already keeps: requirements, tests and risks in Jira, design pages in Confluence, and code changes through Teamwork Graph.
+
+To try it, one click builds GlucoLoop: a fictional insulin app with requirements, tests, a risk file, design pages and code. A few traces are broken on purpose.
+
+Run a rehearsal, and Walkdown samples like an auditor: Class C and safety-related requirements first. It walks each thread through Confluence, Teamwork Graph and Jira, and stops at the first broken link. Here, the insulin dose is rounded, the overdose hazard is in the risk file, but no control is linked. That's a major nonconformity.
+
+Here's how to read it. Each row is one requirement. Each dot is one link in its trace. Green means the evidence is there, and the label under it says where Walkdown found it. Red is where the auditor would stop. The readiness score at the top sums it all up, so you can track it from release to release. And the sampling ledger shows why each requirement was picked, so you can trust the sample.
+
+Every finding cites the clause, and asks the question the auditor would ask. One click puts that question on the ticket, so the right person sees it.
+
+You can assign Walkdown a ticket like a teammate, ask it for a rehearsal in plain words, or chat with it in Rovo.
+
+And it guards the door: a requirement with a broken trace can't be released.
+
+The same audit is available to any AI tool, through Atlassian's MCP server.
+
+Fix the gap, run it again, and the score climbs. That's the whole point: fail in private, pass in public.
+
+To use it on your own project, label your requirements, link each test and each hazard, and keep your design pages and code linked to the ticket. Walkdown does the rest.
+
+Under the hood, the grading is fixed rules, not AI guesswork, so the same records always give the same result. It runs on Atlassian, and no data leaves your site.
+
+Walkdown. Rehearse your audit before the auditor does.
