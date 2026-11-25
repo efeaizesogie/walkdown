@@ -50,7 +50,7 @@ Walkdown samples your requirements the way an auditor would, weighted by IEC 623
 |---|---|
 | read:jira-work | Read requirements, tests, risks, links, fix versions and remote links to build each trace. |
 | write:jira-work | Post auditor questions as comments; create the optional GlucoLoop sample project's work items and links. |
-| read:jira-user | Identify the user who starts a rehearsal (shown in run history). |
+| read:jira-user | Required by Jira for reading work item fields that reference users; Walkdown stores no user data. |
 | manage:jira-configuration | Create the two link types (Verifies, Risk control) when loading the sample, if they are missing. |
 | manage:jira-project | Create the optional GlucoLoop sample project and its release. |
 | read:dev-info:jira, write:dev-info:jira | Store and read the sample project's example commits as development information. |
@@ -61,10 +61,10 @@ Walkdown samples your requirements the way an auditor would, weighted by IEC 623
 ## Privacy & Security answers (draft)
 - **Data egress:** none. All processing runs on Atlassian's Forge platform.
 - **Storage:** Forge storage (app storage) only: rehearsal results (keys, summaries, grades, scores), stored on the customer's site and following Atlassian's data residency.
-- **Personal data:** account ID of the user who started a run. No email addresses, names or end-user content leave the site.
+- **Personal data:** none stored. No account IDs, email addresses or names are kept; nothing leaves the site.
 - **AI/LLM:** none called by the app. Rovo features use the customer's own Rovo allowance.
-- **Logging:** standard Forge logs (no personal data beyond Atlassian account IDs).
+- **Logging:** standard Forge logs with work item keys and status codes only; no personal data.
 - **Data deletion:** uninstalling the app removes Forge storage. Sample content created by the loader is normal Jira/Confluence content the customer can delete.
 
 ## Privacy policy (draft text for a public page)
-> Walkdown runs entirely on Atlassian Forge. It does not send data to any external service. It stores rehearsal results (work item keys and summaries, grades and scores, and the Atlassian account ID of the person who ran each rehearsal) in Forge app storage on your Atlassian site. That data is removed when the app is uninstalled. Walkdown does not use cookies or trackers and does not call AI models; Rovo features use your organisation's Rovo service. Contact: https://github.com/efeaizesogie/walkdown/issues.
+> Walkdown runs entirely on Atlassian Forge. It does not send data to any external service. It stores rehearsal results (work item keys and summaries, grades and scores, and, for ticket-requested runs, that ticket's key) in Forge app storage on your Atlassian site. That data is removed when the app is uninstalled. Walkdown does not use cookies or trackers and does not call AI models; Rovo features use your organisation's Rovo service. Contact: https://github.com/efeaizesogie/walkdown/issues.

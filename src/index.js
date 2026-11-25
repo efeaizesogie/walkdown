@@ -75,7 +75,6 @@ exports.runRehearsalAction = async (payload, context) => {
       minClass: payload.safetyClass ? String(payload.safetyClass).toUpperCase().replace(/[^ABC]/g, '') || undefined : undefined,
       asUser,
       cloudId: cloudIdOf(context, payload),
-      requestedBy: context && context.principal && context.principal.accountId,
       source: 'rovo',
     })
   );
@@ -189,7 +188,6 @@ resolver.define('runRehearsal', async ({ payload, context }) =>
     minClass: payload.minClass || undefined,
     asUser: true,
     cloudId: context.cloudId,
-    requestedBy: context.accountId,
     source: 'app',
   })
 );
