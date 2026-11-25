@@ -81,6 +81,17 @@ async function history(projectKey = DEFAULT_PROJECT) {
   return (await kvs.get(HISTORY_KEY(projectKey.toUpperCase()))) || [];
 }
 
+// If the project has been deleted, its saved rehearsals describe work items that no
+// longer exist: forget them so the page shows a clean start.
+async function forgetIfProjectGone(projectKey = DEFAULT_PROJECT) {
+  const key = projectKey.toUpperCase();
+  const res = await api.asApp().requestJira(api.route`/rest/api/3/project/${key}`, { headers: { Accept: 'application/json' } });
+  if (res.status !== 404) return false;
+  await kvs.delete(`latest:${key}`);
+  await kvs.delete(HISTORY_KEY(key));
+  return true;
+}
+
 // One requirement's full trace, for the agent, MCP and the issue panel.
 async function traceOne(issueKey, { asUser, cloudId } = {}) {
   const requester = asUser ? api.asUser() : api.asApp();
@@ -96,4 +107,4 @@ async function traceOne(issueKey, { asUser, cloudId } = {}) {
   return { ...trace, safetyClass: input.safetyClass, safetyRelated: input.safetyRelated, finding: engine.grade(input, trace), notes };
 }
 
-module.exports = { runRehearsal, latestRun, history, traceOne, parseRequest, DEFAULT_PROJECT };
+module.exports = { runRehearsal, latestRun, history, traceOne, parseRequest, forgetIfProjectGone, DEFAULT_PROJECT };

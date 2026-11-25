@@ -205,7 +205,11 @@ resolver.define('askOnTicket', async ({ payload }) => {
   return { posted: status === 201, status };
 });
 
-resolver.define('latest', async ({ payload }) => R.latestRun(payload.projectKey || R.DEFAULT_PROJECT));
+resolver.define('latest', async ({ payload }) => {
+  const key = payload.projectKey || R.DEFAULT_PROJECT;
+  if (await R.forgetIfProjectGone(key)) return null;
+  return R.latestRun(key);
+});
 resolver.define('history', async ({ payload }) => R.history(payload.projectKey || R.DEFAULT_PROJECT));
 resolver.define('trace', async ({ payload, context }) => R.traceOne(payload.issueKey, { asUser: true, cloudId: context.cloudId }));
 

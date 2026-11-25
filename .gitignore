@@ -5,3 +5,5 @@ dist/
 *.log
 .listing/
 marketing/preview/
+video/takes/
+video/out/
