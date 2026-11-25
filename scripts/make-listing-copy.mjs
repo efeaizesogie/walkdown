@@ -30,7 +30,8 @@ for (const rel of ['src', 'prompts', 'skills', 'package.json', 'package-lock.jso
 fs.mkdirSync(path.join(out, 'ui'), { recursive: true });
 fs.cpSync(path.join(root, 'ui', 'dist'), path.join(out, 'ui', 'dist'), { recursive: true });
 
-let manifest = fs.readFileSync(path.join(root, 'manifest.yml'), 'utf8');
+// Normalise Windows line endings so a stray carriage return can't end up inside a value.
+let manifest = fs.readFileSync(path.join(root, 'manifest.yml'), 'utf8').split('\r\n').join('\n');
 if (appId) manifest = manifest.replace(/id: ari:cloud:ecosystem::app\/[0-9a-f-]+/, `id: ${appId}`);
 else manifest = manifest.replace(/\n  id: ari:cloud:ecosystem::app\/[0-9a-f-]+/, ''); // forge register adds it
 fs.writeFileSync(path.join(out, 'manifest.yml'), manifest);
