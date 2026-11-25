@@ -11,5 +11,8 @@
     "@forge/resolver": "latest",
     "@forge/bridge": "latest",
     "react": "^18.3.1"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\""
   }
 }
