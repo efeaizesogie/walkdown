@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { invoke, router } from '@forge/bridge';
 import { Rail } from './Rail';
+import { Lockup } from './Logo';
 import { SEVERITY_LABEL, cap, shortClause, weightOf, reducedMotion } from './lib';
 
 const CLASSES = [
@@ -195,7 +196,7 @@ export default function App() {
     <div className="page">
       <header>
         <div>
-          <h1 className="visually-hidden">Walkdown</h1>
+          <Lockup />
           <p>Rehearse an IEC 62304 and ISO 14971 audit. Walkdown samples requirements the way an auditor would and stops at the first broken link.</p>
         </div>
         <form className="brief" onSubmit={rehearse}>

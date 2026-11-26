@@ -2,6 +2,7 @@ modules:
   rovo:agent:
     - key: walkdown-auditor
       name: Walkdown Auditor
+      icon: resource:main;icon.svg
       description: A mock medical-device software auditor. Samples requirements by risk, walks each trace end to end and grades the gaps like a real audit.
       prompt: resource:agent-prompts;auditor.txt
       conversationStarters:
@@ -137,6 +138,7 @@ modules:
         function: resolver
       title: Walkdown
       icon: resource:main;icon.svg
+      layout: blank
   jira:issueContext:
     - key: walkdown-issue-panel
       resource: main
