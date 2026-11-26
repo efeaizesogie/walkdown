@@ -68,8 +68,8 @@ def extract():
             if d.exists() and any(d.iterdir()): continue
             d.mkdir(parents=True, exist_ok=True)
             span = c['dur'] * c.get('speed', 1) + 0.2
-            subprocess.run(['ffmpeg', '-v', 'error', '-ss', str(c['from']), '-i', str(ROOT / 'takes' / c['take']), '-t', f'{span:.3f}',
-                            '-vf', ('crop=1920:855:0:177,' if c['take'].startswith('t2') else '') + f'{DELOGO},fps={FPS}', '-q:v', '2', str(d / '%05d.jpg')], check=True)
+            subprocess.run(['ffmpeg', '-v', 'error', '-ss', str(c['from']), '-i', str(ROOT / 'takes4k' / c['take']), '-t', f'{span:.3f}',
+                            '-vf', f'fps={FPS}', '-q:v', '3', str(d / '%05d.jpg')], check=True)
             print('extracted', d.name, len(list(d.iterdir())))
 
 JS = """async ([layers]) => {
@@ -113,7 +113,7 @@ async def worker(p, k, queue, done):
         path = WORK / 'chunks' / f'c{ci:02d}.mp4'
         tmp = path.with_suffix('.part.mp4')
         enc = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'image2pipe', '-framerate', str(FPS), '-c:v', 'mjpeg', '-i', '-',
-                                '-c:v', 'h264_qsv', '-preset', 'veryslow', '-global_quality', '17', '-look_ahead', '0', '-pix_fmt', 'nv12', '-f', 'mp4', str(tmp)], stdin=subprocess.PIPE)
+                                '-c:v', 'h264_qsv', '-preset', 'veryslow', '-b:v', '45M', '-maxrate', '60M', '-bufsize', '90M', '-pix_fmt', 'nv12', '-f', 'mp4', str(tmp)], stdin=subprocess.PIPE)
         for i in range(a, z):
             enc.stdin.write(await draw(pg, i))
         enc.stdin.close(); enc.wait(); tmp.replace(path)

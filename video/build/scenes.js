@@ -323,9 +323,9 @@ function cropAt(keys, t) {
   return keys[keys.length - 1].slice(1);
 }
 function drawFootage(img, crop) {
-  const [cx, cy, w] = crop; const h = w * 9 / 16;
+  const k = img.naturalWidth / 1920; const [cx, cy, w] = crop; const h = w * 9 / 16;
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-  ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h, 0, 0, W, H);
+  ctx.drawImage(img, (cx - w / 2) * k, (cy - h / 2) * k, w * k, h * k, 0, 0, W, H);
 }
 function caption(label, t, dur) {
   if (!label) return; const a = eo(prog(t, 0.1, 0.5)) * (1 - eo(prog(t, dur - 0.3, dur)));

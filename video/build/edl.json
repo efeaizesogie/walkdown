@@ -8,17 +8,17 @@
   ],
   [
    5,
-   13.6,
+   13.8,
    "thud"
   ],
   [
    9,
-   1.0,
+   3.4,
    "thud"
   ],
   [
    11,
-   8.67,
+   8.0,
    "chime"
   ]
  ],
@@ -78,19 +78,25 @@
    "hold": 1.0,
    "clips": [
     {
-     "take": "t1-load.mp4",
-     "from": 10,
+     "take": "r_sample.mp4",
+     "from": 3,
      "dur": 12.46,
-     "speed": 4.3,
+     "speed": 0.8,
      "crop": [
       [
        0,
-       1113,
-       378,
-       1150
+       960,
+       560,
+       1700
+      ],
+      [
+       12.4,
+       760,
+       470,
+       1250
       ]
      ],
-     "label": "One click loads the GlucoLoop sample"
+     "label": "The GlucoLoop sample: requirements, tests and hazards in Jira"
     }
    ]
   },
@@ -105,70 +111,70 @@
    "hold": 0.5,
    "clips": [
     {
-     "take": "t2-session.mp4",
-     "from": 13,
-     "dur": 9,
+     "take": "r_run.mp4",
+     "from": 1,
+     "dur": 12.9,
      "speed": 1,
      "crop": [
       [
        0,
-       1113,
-       400,
-       1200
+       960,
+       420,
+       1300
       ],
       [
-       6.0,
-       1113,
-       400,
-       1200
+       9.5,
+       960,
+       420,
+       1300
       ],
       [
-       8.5,
-       1113,
-       450,
-       1380
+       12.4,
+       960,
+       560,
+       1300
       ]
      ],
      "label": "Run a rehearsal"
     },
     {
-     "take": "t2-session.mp4",
-     "from": 25,
-     "dur": 12.76,
-     "speed": 0.5,
+     "take": "r_run.mp4",
+     "from": 14,
+     "dur": 8.86,
+     "speed": 0.3,
      "crop": [
       [
        0,
-       1113,
-       450,
-       1380
+       960,
+       560,
+       1300
       ],
       [
-       3.3,
-       1113,
-       450,
-       1380
+       0.4,
+       960,
+       560,
+       1300
       ],
       [
-       4.8,
-       1113,
-       520,
-       1150
+       1.8,
+       1000,
+       500,
+       1100
       ]
      ],
      "highlights": [
       {
        "box": [
-        1362,
-        460,
-        104,
-        62
+        1232,
+        458,
+        60,
+        60
        ],
        "label": "Major nonconformity",
        "color": "#C9372C",
        "at": [
-        4.6,
-        13
+        0.9,
+        9
        ]
       }
      ]
@@ -186,25 +192,25 @@
    "hold": 0.5,
    "clips": [
     {
-     "take": "t2-session.mp4",
-     "from": 31,
+     "take": "r_run.mp4",
+     "from": 15,
      "dur": 17.2,
-     "speed": 0.25,
+     "speed": 0.2,
      "crop": [
       [
        0,
-       1113,
-       450,
-       1380
+       960,
+       560,
+       1300
       ]
      ],
      "highlights": [
       {
        "box": [
-        570,
-        452,
+        416,
+        455,
         1088,
-        112
+        108
        ],
        "label": "One requirement",
        "at": [
@@ -214,9 +220,9 @@
       },
       {
        "box": [
-        924,
-        460,
-        68,
+        776,
+        458,
+        58,
         62
        ],
        "label": "One link in its trace",
@@ -227,10 +233,10 @@
       },
       {
        "box": [
-        924,
+        772,
         570,
-        672,
-        64
+        676,
+        62
        ],
        "label": "Green: evidence found, and where",
        "color": "#1F845A",
@@ -241,9 +247,9 @@
       },
       {
        "box": [
-        1380,
-        460,
-        68,
+        1233,
+        458,
+        58,
         62
        ],
        "label": "Red: the auditor stops here",
@@ -255,10 +261,10 @@
       },
       {
        "box": [
-        567,
-        203,
+        414,
+        205,
         1092,
-        129
+        125
        ],
        "label": "Readiness score",
        "at": [
@@ -269,16 +275,16 @@
      ]
     },
     {
-     "take": "t2-session.mp4",
-     "from": 62,
+     "take": "r_run.mp4",
+     "from": 48,
      "dur": 5.53,
      "speed": 0.3,
      "crop": [
       [
        0,
-       1113,
-       450,
-       1380
+       960,
+       712,
+       1300
       ]
      ],
      "label": "Sampling ledger: why each requirement was picked"
@@ -296,79 +302,88 @@
    "hold": 1.0,
    "clips": [
     {
-     "take": "t2-session.mp4",
-     "from": 76,
+     "take": "r_run.mp4",
+     "from": 29,
      "dur": 4.33,
      "speed": 0.4,
      "crop": [
       [
        0,
-       1113,
-       380,
-       1150
-      ],
-      [
-       1.2,
-       1000,
-       380,
-       850
+       960,
+       770,
+       1100
       ]
      ],
      "highlights": [
       {
        "box": [
-        670,
-        288,
-        368,
-        40
+        518,
+        848,
+        338,
+        34
        ],
        "label": "Clauses cited",
        "at": [
-        0.5,
-        2.1
+        0.3,
+        1.9
        ]
       },
       {
        "box": [
-        670,
-        252,
-        694,
-        44
+        518,
+        812,
+        680,
+        40
        ],
        "label": "The auditor's question",
        "at": [
-        2.2,
+        2.0,
         4.4
        ]
       }
      ]
     },
     {
-     "take": "t2-session.mp4",
-     "from": 179,
-     "dur": 5.0,
+     "take": "r_ask.mp4",
+     "from": 11.5,
+     "dur": 2.5,
      "speed": 1,
      "crop": [
       [
        0,
-       820,
-       560,
-       1000
+       960,
+       540,
+       1920
       ]
      ],
-     "label": "Ask on ticket: the question lands on GLU-6",
+     "label": "Ask on ticket"
+    },
+    {
+     "take": "r_ask.mp4",
+     "from": 57,
+     "dur": 2.5,
+     "speed": 0.5,
+     "crop": [
+      [
+       0,
+       760,
+       560,
+       1500
+      ]
+     ],
+     "label": "The question lands on GLU-6",
      "highlights": [
       {
        "box": [
-        396,
-        682,
-        866,
-        112
+        40,
+        555,
+        920,
+        115
        ],
        "label": null,
        "at": [
-        0.3,
-        5
+        0.2,
+        3
        ]
       }
      ]
@@ -386,46 +401,46 @@
    "hold": 4.0,
    "clips": [
     {
-     "take": "t2-session.mp4",
-     "from": 237,
+     "take": "r_agent.mp4",
+     "from": 24,
      "dur": 2.7,
      "speed": 1,
      "crop": [
       [
        0,
-       820,
-       450,
-       1000
+       630,
+       420,
+       1250
       ]
      ],
      "label": "Assign it a ticket: the agent session"
     },
     {
-     "take": "t2-session.mp4",
-     "from": 364,
+     "take": "r_wi.mp4",
+     "from": 9,
      "dur": 2.4,
      "speed": 1,
      "crop": [
       [
        0,
-       820,
-       560,
-       1000
+       620,
+       700,
+       1250
       ]
      ],
      "label": "Or ask in plain words on a work item"
     },
     {
-     "take": "t2-session.mp4",
-     "from": 437,
+     "take": "r_rovo.mp4",
+     "from": 38,
      "dur": 5.53,
-     "speed": 1,
+     "speed": 2,
      "crop": [
       [
        0,
-       1370,
-       380,
-       1100
+       1420,
+       400,
+       1000
       ]
      ],
      "label": "Or chat with it in Rovo"
@@ -443,31 +458,31 @@
    "hold": 1.2,
    "clips": [
     {
-     "take": "t2-session.mp4",
-     "from": 277,
+     "take": "r_gate.mp4",
+     "from": 5.0,
      "dur": 5.76,
      "speed": 1,
      "crop": [
       [
        0,
-       750,
-       455,
+       720,
+       686,
        1400
       ]
      ],
      "highlights": [
       {
        "box": [
-        48,
-        662,
-        402,
-        146
+        46,
+        882,
+        404,
+        152
        ],
        "label": "Release blocked",
        "color": "#C9372C",
        "side": "above",
        "at": [
-        0.4,
+        3.4,
         5.8
        ]
       }
@@ -497,31 +512,45 @@
    "hold": 3.0,
    "clips": [
     {
-     "take": "t2-session.mp4",
-     "from": 676,
-     "dur": 4.0,
-     "speed": 5.5,
+     "take": "r_fix.mp4",
+     "from": 12,
+     "dur": 2.0,
+     "speed": 2.25,
      "crop": [
       [
        0,
-       820,
+       700,
        560,
-       1000
+       1300
       ]
      ],
      "label": "Link the hazard as a risk control"
     },
     {
-     "take": "t2-session.mp4",
-     "from": 726.5,
-     "dur": 6.09,
-     "speed": 1.5,
+     "take": "r_fix.mp4",
+     "from": 18,
+     "dur": 2.0,
+     "speed": 3.25,
      "crop": [
       [
        0,
-       1113,
-       400,
-       1200
+       700,
+       560,
+       1300
+      ]
+     ]
+    },
+    {
+     "take": "r_fix.mp4",
+     "from": 49,
+     "dur": 6.09,
+     "speed": 1,
+     "crop": [
+      [
+       0,
+       960,
+       420,
+       1300
       ]
      ],
      "label": "Run it again"
