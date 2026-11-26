@@ -141,7 +141,7 @@ function sceneChain(t) {
       lines.forEach((l, k) => text(l, s.x, by + 74 + k * 64, { size: 50, weight: 500, align: 'center', color: broken ? C.red : C.ink })); ctx.restore(); }
   });
   // marker
-  const mk = eo(prog(t, 0, 0.4)); fillRR(mx - 26, y - 26, 52, 52, 26, C.blue); ctx.globalAlpha = 1;
+  const mk = eo(prog(t, 0, 0.4)) * (1 - eo(prog(t, snap - 0.1, snap + 0.25))); ctx.save(); ctx.globalAlpha = mk; fillRR(mx - 26, y - 26, 52, 52, 26, C.blue); ctx.restore();
   // finding stamp
   const sp = prog(t, snap + 0.6, snap + 1.0);
   if (sp > 0) {
