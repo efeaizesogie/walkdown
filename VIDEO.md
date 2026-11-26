@@ -1,4 +1,4 @@
-# Walkdown: demo video plan (4K, about 4 min 40 s)
+# Walkdown: demo video (4K, 2 min 55 s)
 
 ## Walkdown in plain words (the layman explanation)
 
@@ -37,10 +37,10 @@ You can talk to it in Rovo (Atlassian's AI assistant), **assign it a ticket like
 
 ## The video
 
-**Length:** about 4:40 (Devpost asks for under 5:00).
+**Length:** 2:55 (Devpost asks for under 5:00). The beat table below was the plan; the final cut follows the same order at a tighter pace.
 **Format:** 3840×2160, 30 fps, H.264, public on YouTube.
 **Voice:** the narrator explains in plain words first, then shows the product.
-**Mix:** code-drawn explainer scenes (crisp 4K, drawn in the app's Atlassian palette) plus **real screen recordings of Walkdown working on the demo site**. The real footage sits inside a clean browser frame on a 4K canvas, with zooms on the parts that matter.
+**Mix:** code-drawn explainer scenes (crisp 4K, drawn in the app's Atlassian palette) plus **real screen recordings of Walkdown working on the demo site**. The real footage is cropped to the Jira page (no browser chrome), with zooms and labelled highlights on the parts that matter.
 
 ### Beats and script
 
@@ -71,7 +71,7 @@ The rules ask for footage of the project working, so the product shots are real 
 - If you'd rather record the takes yourself (OBS, 1080p or higher), I'll give you a shot list and edit what you record.
 
 ### Sound
-- **Narration:** edge-tts **en-NG-AbeoNeural**, as in *Your Naira Is Melting*, or **Ezinne** (female). Word timings drive the cuts.
+- **Narration:** edge-tts **en-US-AndrewNeural** at -4% rate. Word timings drive the cuts.
 - **Music:** a calm synthesized bed with a soft "stamp" on each finding and a rising tone as the score climbs. All synthesized; no licensed music (the rules ban copyrighted music).
 - **Loudness:** about −14 LUFS.
 
@@ -80,3 +80,14 @@ The rules ask for footage of the project working, so the product shots are real 
 - Every on-screen number must match the real app.
 - No third-party trademarks beyond Atlassian's own product names, which the hackathon is about.
 - Total length under 5:00.
+
+### How it is built
+
+Everything lives in `video/build/`:
+
+- `edl.json`: the timeline. Each segment has a narration slice, a pause, and either a drawn scene or footage clips (source time, speed, crop keyframes, highlight boxes).
+- `scenes.js` + `page.html`: the drawn scenes and the footage compositor, a pure function of time on a 3840x2160 canvas.
+- `audio.py`: narration with pauses, a synthesized music bed and cue sounds, written to `video/work/mix.wav`.
+- `render.py`: `extract` pulls the footage frames, `times` renders check stills, `video` renders the film and mixes it at -14 LUFS into `video/walkdown-demo-4k.mp4`.
+
+Raw takes (`video/takes/`) and working files (`video/work/`) are not committed.

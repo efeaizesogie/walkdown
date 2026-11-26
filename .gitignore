@@ -7,3 +7,5 @@ dist/
 marketing/preview/
 video/takes/
 video/out/
+video/work/
+video/*.mp4

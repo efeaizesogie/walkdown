@@ -1,0 +1,565 @@
+{
+ "tail": 0,
+ "cues": [
+  [
+   1,
+   9.0,
+   "thud"
+  ],
+  [
+   5,
+   13.6,
+   "thud"
+  ],
+  [
+   9,
+   1.0,
+   "thud"
+  ],
+  [
+   11,
+   8.67,
+   "chime"
+  ]
+ ],
+ "segments": [
+  {
+   "id": "hook",
+   "kind": "drawn",
+   "scene": "hook",
+   "vo": [
+    0,
+    7.17
+   ],
+   "hold": 0.5,
+   "clips": []
+  },
+  {
+   "id": "chain",
+   "kind": "drawn",
+   "scene": "chain",
+   "vo": [
+    7.17,
+    20.98
+   ],
+   "hold": 0.5,
+   "clips": []
+  },
+  {
+   "id": "who",
+   "kind": "drawn",
+   "scene": "who",
+   "vo": [
+    20.98,
+    31.77
+   ],
+   "hold": 0.4,
+   "clips": []
+  },
+  {
+   "id": "title",
+   "kind": "drawn",
+   "scene": "title",
+   "vo": [
+    31.77,
+    44.92
+   ],
+   "hold": 0.6,
+   "clips": []
+  },
+  {
+   "id": "load",
+   "kind": "foot",
+   "scene": "load",
+   "vo": [
+    44.92,
+    56.38
+   ],
+   "hold": 1.0,
+   "clips": [
+    {
+     "take": "t1-load.mp4",
+     "from": 10,
+     "dur": 12.46,
+     "speed": 4.3,
+     "crop": [
+      [
+       0,
+       1113,
+       378,
+       1150
+      ]
+     ],
+     "label": "One click loads the GlucoLoop sample"
+    }
+   ]
+  },
+  {
+   "id": "run",
+   "kind": "foot",
+   "scene": "run",
+   "vo": [
+    56.38,
+    77.64
+   ],
+   "hold": 0.5,
+   "clips": [
+    {
+     "take": "t2-session.mp4",
+     "from": 13,
+     "dur": 9,
+     "speed": 1,
+     "crop": [
+      [
+       0,
+       1113,
+       400,
+       1200
+      ],
+      [
+       6.0,
+       1113,
+       400,
+       1200
+      ],
+      [
+       8.5,
+       1113,
+       450,
+       1380
+      ]
+     ],
+     "label": "Run a rehearsal"
+    },
+    {
+     "take": "t2-session.mp4",
+     "from": 25,
+     "dur": 12.76,
+     "speed": 0.5,
+     "crop": [
+      [
+       0,
+       1113,
+       450,
+       1380
+      ],
+      [
+       3.3,
+       1113,
+       450,
+       1380
+      ],
+      [
+       4.8,
+       1113,
+       520,
+       1150
+      ]
+     ],
+     "highlights": [
+      {
+       "box": [
+        1362,
+        460,
+        104,
+        62
+       ],
+       "label": "Major nonconformity",
+       "color": "#C9372C",
+       "at": [
+        4.6,
+        13
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "read",
+   "kind": "foot",
+   "scene": "read",
+   "vo": [
+    77.64,
+    99.87
+   ],
+   "hold": 0.5,
+   "clips": [
+    {
+     "take": "t2-session.mp4",
+     "from": 31,
+     "dur": 17.2,
+     "speed": 0.25,
+     "crop": [
+      [
+       0,
+       1113,
+       450,
+       1380
+      ]
+     ],
+     "highlights": [
+      {
+       "box": [
+        570,
+        452,
+        1088,
+        112
+       ],
+       "label": "One requirement",
+       "at": [
+        0.9,
+        3.0
+       ]
+      },
+      {
+       "box": [
+        924,
+        460,
+        68,
+        62
+       ],
+       "label": "One link in its trace",
+       "at": [
+        3.1,
+        5.3
+       ]
+      },
+      {
+       "box": [
+        924,
+        570,
+        672,
+        64
+       ],
+       "label": "Green: evidence found, and where",
+       "color": "#1F845A",
+       "at": [
+        5.4,
+        10.1
+       ]
+      },
+      {
+       "box": [
+        1380,
+        460,
+        68,
+        62
+       ],
+       "label": "Red: the auditor stops here",
+       "color": "#C9372C",
+       "at": [
+        10.2,
+        12.3
+       ]
+      },
+      {
+       "box": [
+        567,
+        203,
+        1092,
+        129
+       ],
+       "label": "Readiness score",
+       "at": [
+        12.4,
+        17.2
+       ]
+      }
+     ]
+    },
+    {
+     "take": "t2-session.mp4",
+     "from": 62,
+     "dur": 5.53,
+     "speed": 0.3,
+     "crop": [
+      [
+       0,
+       1113,
+       450,
+       1380
+      ]
+     ],
+     "label": "Sampling ledger: why each requirement was picked"
+    }
+   ]
+  },
+  {
+   "id": "log",
+   "kind": "foot",
+   "scene": "log",
+   "vo": [
+    99.87,
+    108.2
+   ],
+   "hold": 1.0,
+   "clips": [
+    {
+     "take": "t2-session.mp4",
+     "from": 76,
+     "dur": 4.33,
+     "speed": 0.4,
+     "crop": [
+      [
+       0,
+       1113,
+       380,
+       1150
+      ],
+      [
+       1.2,
+       1000,
+       380,
+       850
+      ]
+     ],
+     "highlights": [
+      {
+       "box": [
+        670,
+        288,
+        368,
+        40
+       ],
+       "label": "Clauses cited",
+       "at": [
+        0.5,
+        2.1
+       ]
+      },
+      {
+       "box": [
+        670,
+        252,
+        694,
+        44
+       ],
+       "label": "The auditor's question",
+       "at": [
+        2.2,
+        4.4
+       ]
+      }
+     ]
+    },
+    {
+     "take": "t2-session.mp4",
+     "from": 179,
+     "dur": 5.0,
+     "speed": 1,
+     "crop": [
+      [
+       0,
+       820,
+       560,
+       1000
+      ]
+     ],
+     "label": "Ask on ticket: the question lands on GLU-6",
+     "highlights": [
+      {
+       "box": [
+        396,
+        682,
+        866,
+        112
+       ],
+       "label": null,
+       "at": [
+        0.3,
+        5
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "assign",
+   "kind": "foot",
+   "scene": "assign",
+   "vo": [
+    108.2,
+    114.83
+   ],
+   "hold": 4.0,
+   "clips": [
+    {
+     "take": "t2-session.mp4",
+     "from": 237,
+     "dur": 2.7,
+     "speed": 1,
+     "crop": [
+      [
+       0,
+       820,
+       450,
+       1000
+      ]
+     ],
+     "label": "Assign it a ticket: the agent session"
+    },
+    {
+     "take": "t2-session.mp4",
+     "from": 364,
+     "dur": 2.4,
+     "speed": 1,
+     "crop": [
+      [
+       0,
+       820,
+       560,
+       1000
+      ]
+     ],
+     "label": "Or ask in plain words on a work item"
+    },
+    {
+     "take": "t2-session.mp4",
+     "from": 437,
+     "dur": 5.53,
+     "speed": 1,
+     "crop": [
+      [
+       0,
+       1370,
+       380,
+       1100
+      ]
+     ],
+     "label": "Or chat with it in Rovo"
+    }
+   ]
+  },
+  {
+   "id": "gate",
+   "kind": "foot",
+   "scene": "gate",
+   "vo": [
+    114.83,
+    119.39
+   ],
+   "hold": 1.2,
+   "clips": [
+    {
+     "take": "t2-session.mp4",
+     "from": 277,
+     "dur": 5.76,
+     "speed": 1,
+     "crop": [
+      [
+       0,
+       750,
+       455,
+       1400
+      ]
+     ],
+     "highlights": [
+      {
+       "box": [
+        48,
+        662,
+        402,
+        146
+       ],
+       "label": "Release blocked",
+       "color": "#C9372C",
+       "side": "above",
+       "at": [
+        0.4,
+        5.8
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mcp",
+   "kind": "drawn",
+   "scene": "mcp",
+   "vo": [
+    119.39,
+    124.64
+   ],
+   "hold": 1.2,
+   "clips": []
+  },
+  {
+   "id": "fix",
+   "kind": "foot",
+   "scene": "fix",
+   "vo": [
+    124.64,
+    131.73
+   ],
+   "hold": 3.0,
+   "clips": [
+    {
+     "take": "t2-session.mp4",
+     "from": 676,
+     "dur": 4.0,
+     "speed": 5.5,
+     "crop": [
+      [
+       0,
+       820,
+       560,
+       1000
+      ]
+     ],
+     "label": "Link the hazard as a risk control"
+    },
+    {
+     "take": "t2-session.mp4",
+     "from": 726.5,
+     "dur": 6.09,
+     "speed": 1.5,
+     "crop": [
+      [
+       0,
+       1113,
+       400,
+       1200
+      ]
+     ],
+     "label": "Run it again"
+    }
+   ]
+  },
+  {
+   "id": "use",
+   "kind": "drawn",
+   "scene": "use",
+   "vo": [
+    131.73,
+    141.77
+   ],
+   "hold": 0.6,
+   "clips": []
+  },
+  {
+   "id": "hood",
+   "kind": "drawn",
+   "scene": "hood",
+   "vo": [
+    141.77,
+    152.28
+   ],
+   "hold": 0.6,
+   "clips": []
+  },
+  {
+   "id": "end",
+   "kind": "drawn",
+   "scene": "end",
+   "vo": [
+    152.28,
+    155.7
+   ],
+   "hold": 3.5,
+   "clips": []
+  }
+ ]
+}

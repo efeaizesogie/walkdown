@@ -16,5 +16,5 @@ while (-not ([Fg]::Title() -like "*Google Chrome*")) {
 }
 Write-Output ("RECORDING " + [Fg]::Title())
 $out = Join-Path $PSScriptRoot ("takes\" + $name + ".mp4")
-& ffmpeg -hide_banner -loglevel error -y -f gdigrab -framerate 30 -offset_x 0 -offset_y 177 -video_size 1920x855 -draw_mouse 0 -t $seconds -i desktop -c:v libx264 -preset ultrafast -crf 10 $out
+& ffmpeg -hide_banner -loglevel error -y -f gdigrab -framerate 30 -offset_x 0 -offset_y 0 -video_size 1920x1080 -draw_mouse 0 -t $seconds -i desktop -c:v libx264 -preset ultrafast -crf 10 $out
 Write-Output "DONE $out"
