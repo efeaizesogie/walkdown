@@ -13,7 +13,7 @@ Draft for your review. Nothing has been submitted to Devpost. The install link i
 | Category | **Apps for Specialized Industries** |
 | Bonus prizes | Best Agents (Rovo/Assignable agents); Best app with Atlassian MCP; Best apps with Teamwork Graph integration; Best Marketplace published app |
 | Installation link | *(paste the judge install link)* |
-| Demo video | *(YouTube link, under 5 minutes)* |
+| Demo video | https://youtu.be/g3VZY6gBIk4 (2:55, 4K) |
 | Code | https://github.com/efeaizesogie/walkdown |
 | Docs | https://efeaizesogie.github.io/walkdown/ |
 | Marketplace | *(listing link or review ticket link, once Atlassian sends it)* |

@@ -8,6 +8,8 @@ Each gap is graded the way auditors grade it (major nonconformity, minor nonconf
 
 Built on Atlassian Forge for Codegeist 2026 (Apps for Specialized Industries). It runs on Atlassian: no external services, no data leaves the site.
 
+**Demo video (2:55, 4K):** https://youtu.be/g3VZY6gBIk4
+
 ## Try it in five minutes (for judges)
 
 1. **Install** Walkdown with the install link from the submission. Choose your site, and install it in **Jira and Confluence**.
